@@ -1,3 +1,40 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/B_park"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/B_restaurant"
+        android:layout_marginTop="33dp"
+        android:onClick="onClick"
+        android:text="Park" />
+
+    <Button
+        android:id="@+id/B_library"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="onClick"
+        android:text="Library"
+        android:layout_below="@+id/B_restaurant"
+        android:layout_alignEnd="@+id/B_park" />
+
+    <Button
+        android:id="@+id/B_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="17dp"
+        android:onClick="onClick"
+        android:text="Restaurant"
+        android:layout_below="@+id/B_park"
+        android:layout_alignParentStart="true" />
+
+
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -5,4 +42,8 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dgerangal.myapplication.MapsActivity" />
+    tools:context="com.example.dgerangal.myapplication.MapsActivity"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true" />
+
+    </RelativeLayout>

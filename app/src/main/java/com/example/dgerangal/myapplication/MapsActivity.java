@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,6 +40,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location lastLocation;
     private Marker currentLocationMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
+    int PROXIMITY_RADIUS = 10000;
+    double latitude;
+    double longitude;
 
 
 
@@ -128,6 +132,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
 
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+
         lastLocation = location;
 
         if(currentLocationMarker != null)
@@ -149,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-        mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
 
         if(client != null)
         {
@@ -191,6 +198,72 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return true;
     }
 
+    public void onClick(View v) {
+
+        Object dataTransfer[] = new Object[2];
+        String url;
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
+        switch (v.getId()) {
+
+            case R.id.B_park:
+
+                mMap.clear();
+                String park = "park";
+                url = getUrl(latitude, longitude, park);
+
+                dataTransfer[0] = mMap;
+                dataTransfer[1] = url;
+
+                getNearbyPlacesData.execute(dataTransfer);
+
+                Toast.makeText(MapsActivity.this, "Showing nearby Parks", Toast.LENGTH_LONG).show();
+
+            break;
+            case R.id.B_restaurant:
+
+                mMap.clear();
+                String restaurant = "restaurant";
+                url = getUrl(latitude, longitude, restaurant);
+
+                dataTransfer[0] = mMap;
+                dataTransfer[1] = url;
+
+                getNearbyPlacesData.execute(dataTransfer);
+
+                Toast.makeText(MapsActivity.this, "Showing nearby Restaurant", Toast.LENGTH_LONG).show();
+
+
+            break;
+            case R.id.B_library:
+
+                mMap.clear();
+                String library = "library";
+                url = getUrl(latitude, longitude, library);
+
+                dataTransfer[0] = mMap;
+                dataTransfer[1] = url;
+
+                getNearbyPlacesData.execute(dataTransfer);
+
+                Toast.makeText(MapsActivity.this, "Showing nearby Library", Toast.LENGTH_LONG).show();
+
+            break;
+        }
+    }
+
+
+    private String getUrl(double latitude, double longitude, String nearbyPlace){
+
+        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googlePlaceUrl.append("location="+latitude+","+longitude);
+        googlePlaceUrl.append("&radius="+PROXIMITY_RADIUS);
+        googlePlaceUrl.append("&type="+nearbyPlace);
+        googlePlaceUrl.append("&sensor=true");
+        googlePlaceUrl.append("&key=AIzaSyBuVprrrV6G170IXhu4N2Mn9l91wvWGZWY");
+
+        return googlePlaceUrl.toString();
+    }
 
 
 
